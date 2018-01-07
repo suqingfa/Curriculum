@@ -1,7 +1,8 @@
 package application.scheduled;
 
-import application.config.properties.LoginProperties;
+import application.ContextHolder;
 import application.entity.AddCourse;
+import application.entity.Config;
 import application.model.CourseList;
 import application.model.Result;
 import application.repository.AddCourseRepository;
@@ -9,8 +10,6 @@ import application.repository.CourseRepository;
 import application.retrofit.RetrofitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import retrofit2.Response;
@@ -27,8 +26,6 @@ public class CourseScheduled
     private CourseRepository courseRepository;
     @Autowired
     private AddCourseRepository addCourseRepository;
-    @Autowired
-    private LoginProperties loginProperties;
 
     private int nextCoursePage = 1;
     private RetrofitService retrofitService = RetrofitService.getInstance();
@@ -50,7 +47,8 @@ public class CourseScheduled
     @Scheduled(fixedDelay = 100, initialDelay = 500)
     public void getCourseList() throws Exception
     {
-        if (!loginProperties.isGetCourseList())
+        Config config = ContextHolder.getConfig();
+        if (config == null || !config.isGetCourseList())
         {
             return;
         }
@@ -77,7 +75,7 @@ public class CourseScheduled
     public void addCourse() throws Exception
     {
         List<AddCourse> list = addCourseRepository.findByAdd(false);
-        if(list.size() == 0)
+        if (list.size() == 0)
         {
             log.info("AddCourse list size == 0");
             return;
@@ -95,7 +93,8 @@ public class CourseScheduled
             addCourse.setResult(result.getMsg());
             addCourseRepository.save(addCourse);
 
-            log.warn("Add course kch:{} kxh:{} result:{}", addCourse.getKCH(), addCourse.getKXH(), addCourse.getResult());
+            log.warn("Add course kch:{} kxh:{} result:{}", addCourse.getKCH(), addCourse.getKXH(), addCourse
+                    .getResult());
         }
     }
 }

@@ -1,7 +1,7 @@
 package application.retrofit;
 
 import application.ContextHolder;
-import application.config.properties.LoginProperties;
+import application.entity.Config;
 import application.model.CourseList;
 import application.model.Result;
 import okhttp3.JavaNetCookieJar;
@@ -38,10 +38,14 @@ public interface RetrofitService
 
     default boolean login() throws Exception
     {
-        LoginProperties loginProperties = ContextHolder.getBean(LoginProperties.class);
+        Config config = ContextHolder.getConfig();
+        if (config == null)
+        {
+            return false;
+        }
 
-        String passwordMd5 = Hex.encodeHexString(DigestUtils.md5(loginProperties.getPassword()));
-        Response<String> response = login(loginProperties.getUsername(), passwordMd5).execute();
+        String passwordMd5 = Hex.encodeHexString(DigestUtils.md5(config.getPassword()));
+        Response<String> response = login(config.getUsername(), passwordMd5).execute();
         return response.isSuccessful() && "success".equals(response.body());
     }
 
