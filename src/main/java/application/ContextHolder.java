@@ -27,8 +27,8 @@ public final class ContextHolder implements ApplicationContextAware
 
     public static Config getConfig()
     {
-        if (config == null && (updateConfigInstant == null ||
-                updateConfigInstant.plus(60, ChronoUnit.SECONDS).isBefore(Instant.now())))
+        if (config == null || updateConfigInstant == null ||
+                updateConfigInstant.plus(60, ChronoUnit.SECONDS).isBefore(Instant.now()))
         {
             updateConfigInstant = Instant.now();
 
