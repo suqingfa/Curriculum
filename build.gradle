@@ -1,0 +1,33 @@
+configure(allprojects) { project ->
+    group 'Learn'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'application'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        compile(
+                'org.postgresql:postgresql:42.+',
+                'org.springframework.boot:spring-boot-configuration-processor:1.+',
+                'org.springframework.boot:spring-boot-starter-data-jpa:1.+',
+                'com.squareup.okhttp3:okhttp-urlconnection:3.+',
+                'com.squareup.retrofit2:converter-gson:2.+',
+                'commons-codec:commons-codec:1.+',
+        )
+
+        compileOnly(
+                'org.projectlombok:lombok:1.+',
+        )
+
+        testCompile(
+                'org.springframework.boot:spring-boot-starter-test:1.+',
+        )
+    }
+}
