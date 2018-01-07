@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Component
@@ -15,6 +17,7 @@ public final class ContextHolder implements ApplicationContextAware
 {
     private static ApplicationContext context;
     private static Config config;
+    private static Instant updateConfigInstant;
 
     public static <T> T getBean(Class<T> requiredType)
     {
@@ -24,8 +27,11 @@ public final class ContextHolder implements ApplicationContextAware
 
     public static Config getConfig()
     {
-        if (config == null)
+        if (config == null && (updateConfigInstant == null ||
+                updateConfigInstant.plus(60, ChronoUnit.SECONDS).isBefore(Instant.now())))
         {
+            updateConfigInstant = Instant.now();
+
             ConfigRepository configRepository = getBean(ConfigRepository.class);
             Pageable pageable = new PageRequest(0, 1);
             Page<Config> all = configRepository.findAll(pageable);
