@@ -14,9 +14,7 @@ configure(allprojects) { project ->
 
     dependencies {
         compile(
-                'org.postgresql:postgresql:42.+',
-                'org.springframework.boot:spring-boot-configuration-processor:1.+',
-                'org.springframework.boot:spring-boot-starter-data-jpa:1.+',
+                'org.springframework.boot:spring-boot-starter:1.+',
                 'com.squareup.okhttp3:okhttp-urlconnection:3.+',
                 'com.squareup.retrofit2:converter-gson:2.+',
                 'commons-codec:commons-codec:1.+',
