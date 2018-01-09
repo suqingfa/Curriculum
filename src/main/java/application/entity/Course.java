@@ -43,5 +43,5 @@ public class Course implements Serializable
     private double XF;
 
     // 课余量
-    private int KYL;
+    private int kyl;
 }
