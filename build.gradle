@@ -29,3 +29,15 @@ configure(allprojects) { project ->
         )
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'application.Application'
+        attributes 'Class-Path': configurations.compile.collect { it.getName() }.join(' ')
+    }
+}
+
+task copyJars(type: Copy){
+    from configurations.runtime
+    into "$buildDir/libs/"
+}
