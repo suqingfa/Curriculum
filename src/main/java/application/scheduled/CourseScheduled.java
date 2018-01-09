@@ -44,7 +44,7 @@ public class CourseScheduled
         }
     }
 
-    @Scheduled(fixedRate = 100, initialDelay = 500)
+    @Scheduled(fixedDelay = 100, initialDelay = 500)
     public void getCourseList() throws Exception
     {
         Config config = ContextHolder.getConfig();
@@ -71,7 +71,7 @@ public class CourseScheduled
         }
     }
 
-    @Scheduled(fixedRate = 50, initialDelay = 500)
+    @Scheduled(fixedDelay = 50, initialDelay = 500)
     public void addCourse() throws Exception
     {
         List<AddCourse> list = addCourseRepository.findByAdd(false);
