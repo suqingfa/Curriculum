@@ -31,3 +31,9 @@ configure(allprojects) { project ->
         )
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'application.Application'
+    }
+}
