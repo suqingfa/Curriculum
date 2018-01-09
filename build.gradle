@@ -3,7 +3,6 @@ configure(allprojects) { project ->
     version '1.0-SNAPSHOT'
 
     apply plugin: 'java'
-    apply plugin: 'application'
 
     sourceCompatibility = 1.8
 
@@ -35,5 +34,11 @@ configure(allprojects) { project ->
 jar {
     manifest {
         attributes 'Main-Class': 'application.Application'
+        attributes 'Class-Path': configurations.compile.collect { it.getName() }.join(' ')
     }
+}
+
+task copyJars(type: Copy){
+    from configurations.runtime
+    into "$buildDir/libs/"
 }
