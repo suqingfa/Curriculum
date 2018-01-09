@@ -65,7 +65,7 @@ public class CourseScheduled
         courseRepository.save(result.getObject().getResultList());
         log.info("Get course list success, page = {} ", nextCoursePage - 1);
 
-        if (nextCoursePage == result.getObject().getTotalPages())
+        if (nextCoursePage > result.getObject().getTotalPages())
         {
             nextCoursePage = 1;
         }
