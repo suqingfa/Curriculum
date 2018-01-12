@@ -86,7 +86,7 @@ public class CourseScheduled
             Response<Result> response = retrofitService.addCourse(addCourse.getKCH(), addCourse.getKXH()).execute();
             Result result = response.body();
 
-            if (response.isSuccessful() && "success".equals(result.getResult()))
+            if (response.isSuccessful() && "success".equals(result.getResult()) && result.getMsg().contains("选课成功"))
             {
                 addCourse.setAdd(true);
             }
