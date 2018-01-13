@@ -29,6 +29,7 @@ public class CourseScheduled
 
     private int nextCoursePage = 1;
     private RetrofitService retrofitService = RetrofitService.getInstance();
+    private int nextAddCourse = 0;
 
     @Scheduled(fixedDelay = 2 * 60 * 1000)
     public void login() throws Exception
@@ -71,7 +72,7 @@ public class CourseScheduled
         }
     }
 
-    @Scheduled(fixedDelay = 50, initialDelay = 500)
+    @Scheduled(fixedRate = 2111, initialDelay = 2111)
     public void addCourse() throws Exception
     {
         List<AddCourse> list = addCourseRepository.findByAdd(false);
@@ -81,20 +82,24 @@ public class CourseScheduled
             return;
         }
 
-        for (AddCourse addCourse : list)
+        if (++nextAddCourse >= list.size())
         {
-            Response<Result> response = retrofitService.addCourse(addCourse.getKCH(), addCourse.getKXH()).execute();
-            Result result = response.body();
-
-            if (response.isSuccessful() && "success".equals(result.getResult()) && result.getMsg().contains("选课成功"))
-            {
-                addCourse.setAdd(true);
-            }
-            addCourse.setResult(result.getMsg());
-            addCourseRepository.save(addCourse);
-
-            log.warn("Add course kch:{} kxh:{} result:{}", addCourse.getKCH(), addCourse.getKXH(), addCourse
-                    .getResult());
+            nextAddCourse = 0;
         }
+
+        AddCourse addCourse = list.get(nextAddCourse);
+
+        Response<Result> response = retrofitService.addCourse(addCourse.getKCH(), addCourse.getKXH()).execute();
+        Result result = response.body();
+
+        if (response.isSuccessful() && "success".equals(result.getResult()) && result.getMsg().contains("选课成功"))
+        {
+            addCourse.setAdd(true);
+        }
+        addCourse.setResult(result.getMsg());
+        addCourseRepository.save(addCourse);
+
+        log.warn("Add course kch:{} kxh:{} result:{}", addCourse.getKCH(), addCourse.getKXH(), addCourse
+                .getResult());
     }
 }

@@ -38,7 +38,7 @@ jar {
     }
 }
 
-task copyJars(type: Copy){
+task copyJars(type: Copy) {
     from configurations.runtime
     into "$buildDir/libs/"
 }
